@@ -1,16 +1,18 @@
 import cv2
 import numpy as np
 
-# Cargar el modelo YOLOv3
-net = cv2.dnn.readNet('./Lib/yolov3.weights', './Lib/yolov3.cfg')
+# Cargar el modelo YOLOv3 con soporte para GPU
+net = cv2.dnn.readNet('./Lib/yolov3-tiny.weights', './Lib/yolov3-tiny.cfg')
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
 # Cargar las clases
 classes = []
 with open('./Lib/coco.names', 'r') as f:
     classes = f.read().strip().split('\n')
 
-# Inserta el nombre de tu video
-cap = cv2.VideoCapture('./Video/1.mp4')
+# Carga Video
+cap = cv2.VideoCapture(0)
 
 while True:
     ret, frame = cap.read()
@@ -22,7 +24,7 @@ while True:
     height, width, _ = frame.shape
 
     # Construir un blob desde la imagen
-    blob = cv2.dnn.blobFromImage(frame, 0.5/255.0, (249, 249), swapRB=True, crop=False)
+    blob = cv2.dnn.blobFromImage(frame, 0.5/255.0, (320, 320), swapRB=True, crop=False)
 
     # Establecer la entrada para la red neuronal
     net.setInput(blob)
@@ -69,5 +71,6 @@ while True:
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
 cap.release()
 cv2.destroyAllWindows()

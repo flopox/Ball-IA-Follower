@@ -1,2 +1,2 @@
-download the file from:
-https://github.com/patrick013/Object-Detection---Yolov3/blob/master/model/yolov3.weights
+Download the file from:
+https://github.com/smarthomefans/darknet-test/blob/master/yolov3-tiny.weights
